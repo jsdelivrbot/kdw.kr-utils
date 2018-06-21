@@ -13,6 +13,28 @@
         <textarea v-model="encryptText" placeholder="디코딩할 텍스트"></textarea>
       </div>
     </div>
+    <div :class="$style['numberofletters']">
+      <h3>글자수 세기</h3>
+      <textarea v-model="textlength"></textarea>
+      <div>
+        {{textlength.length}} 글자(띄어쓰기 포함)<br>
+        {{textlength.replace(/ /g,'').length}} 글자(띄어쓰기 미포함)
+      </div>
+    </div>
+    <div :class="$style['numberofletters']">
+      <h3>글자 뒤집기</h3>
+      <textarea v-model="textreverse"></textarea>
+      <textarea readonly>{{textreversed}}</textarea>
+    </div>
+    <div :class="$style['transfertext']">
+      <h3>글자 변환</h3>
+      <textarea v-model="transferText.text" placeholder="원본"/>
+      <textarea v-model="transferText.ascii" placeholder="아스키코드"/>
+      <textarea v-model="transferText.binary" placeholder="2진수"/>
+      <textarea v-model="transferText.octal" placeholder="8진수"/>
+      <textarea v-model="transferText.decimal" placeholder="10진수"/>
+      <textarea v-model="transferText.hex" placeholder="16진수"/>
+    </div>
   </div>
 </template>
 
@@ -44,12 +66,30 @@ export default {
       needEncryptKey: false,
       encryptText: '',
       decryptText: '',
-      chkEncrypt: false
+      chkEncrypt: false,
+
+      textlength: '',
+      textreverse: '',
+      textreversed: '',
+
+      transferText: {
+        text: '',
+        ascii: '',
+        binary: '',
+        octal: '',
+        decimal: '',
+        hex: '',
+      }
     }
   },
   mounted () {
     this.selectedEncrypt = this.encryptList[0]
     this.needEncryptKey = this.selectedEncrypt.needKey
+  },
+  computed: {
+    transferText_ () {
+      return this.transferText.text
+    }
   },
   watch: {
     selectedEncryptType () {
@@ -65,8 +105,32 @@ export default {
       const func = this.selectedEncrypt.function
       if (this.chkEncrypt) this.chkencrypt = false
       else this.decryptText = this.needEncryptKey?func.encrypt(this.encryptText, this.encryptKey).toString(CryptoJS.enc.Utf8):func.encrypt(this.encryptText)
+    },
+    textreverse () {
+      this.textreversed = reverseString(this.textreverse)
+    },
+    transferText_ () {
+      var a=[], txt = this.transferText_
+      for(var i=0;i<txt.length;i++) a.push(txt.charCodeAt(i))
+      this.transferText.ascii = a.join(' ')
+      a=[]
+      for(var i=0;i<txt.length;i++) a.push(txt.charCodeAt(i).toString(2))
+      this.transferText.binary = a.join(' ')
+      a=[]
+      for(var i=0;i<txt.length;i++) a.push(txt.charCodeAt(i).toString(8))
+      this.transferText.octal = a.join(' ')
+      a=[]
+      for(var i=0;i<txt.length;i++) a.push(txt.charCodeAt(i).toString(10))
+      this.transferText.decimal = a.join(' ')
+      a=[]
+      for(var i=0;i<txt.length;i++) a.push(txt.charCodeAt(i).toString(16))
+      this.transferText.hex = a.join(' ')
     }
   }
+}
+
+function reverseString(str) {
+    return str.split("").reverse().join("")
 }
 
 function caesar(s, n) {
@@ -111,9 +175,24 @@ function b64DecodeUnicode(str) {
 <style lang="scss" module>
 .encode {
   margin: 1rem;
+  .textbox {
+    margin-top: 1rem;
+    textarea {
+      height: 10rem;
+    }
+  }
 }
-.textbox {
-  margin-top: 1rem;
+.numberofletters {
+  margin: 1rem;
+  textarea {
+    height: 10rem;
+    width: 30rem;
+  }
+  div {
+    display: inline-block;
+  }
+}
+.transfertext {
   textarea {
     height: 10rem;
   }
