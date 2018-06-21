@@ -2,7 +2,7 @@
   "name": "utils.kdw.kr",
   "version": "1.0.0",
   "description": "utils",
-  "author": "kdwkr(Kim-Daewoon)<me@kdw.kr>",
+  "author": "kdwkr (Kim-Daewoon)<me@kdw.kr>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

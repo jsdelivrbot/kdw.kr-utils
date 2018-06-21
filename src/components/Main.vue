@@ -193,6 +193,7 @@ function b64DecodeUnicode(str) {
   }
 }
 .transfertext {
+  margin: 1rem;
   textarea {
     height: 10rem;
   }
