@@ -1,5 +1,6 @@
 <template>
   <div id="main">
+    <router-link to="ascii" style="margin: 1rem;">아스키 코드표</router-link>
     <div :class="$style['encode']">
       <h3>인코딩/디코딩</h3>
       <div :class="$style['option']">
